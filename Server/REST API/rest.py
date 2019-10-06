@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "" #will come from pickle later
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "secret_holder" #TBD Change before transition to deployment
 db = SQLAlchemy.SQLAlchemy(app)
+db.metadata.clear()
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
