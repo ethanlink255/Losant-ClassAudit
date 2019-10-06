@@ -1,0 +1,10 @@
+{% extends "base_login.html" %} {% block content %}
+<h2>Register</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }} {{ form.username.label }} <br> {{ form.username(size=32) }} <br>
+    <span class="">{{ error }}</span> <br> {{ form.password.label }} <br> {{ form.password(size=32) }} <br>
+    <span class="">{{ error }}</span> <br> {{ form.password_conf.label }} <br> {{ form.password_conf(size=32) }} <br>
+    <span class="">{{ error }}</span> <br> {{ form.submit() }}
+
+</form>
+{% endblock %}
