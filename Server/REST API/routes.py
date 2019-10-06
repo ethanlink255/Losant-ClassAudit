@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, flash
-from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
+from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from flask_socketio import SocketIO, send, emit
@@ -10,12 +10,11 @@ from forms import LoginForm, RegistrationForm
 @app.route('/')
 @login_required
 def index():
-    print("cats")
     return render_template("index.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_autheticated:
+    if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
     
