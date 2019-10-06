@@ -4,8 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from flask_socketio import SocketIO, send, emit
 
-from rest import app, db
-from models import User
+from rest import app, db, User
 from forms import LoginForm, RegistrationForm
 
 @app.route('/')
