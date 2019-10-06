@@ -15,7 +15,6 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("Cats")
     if current_user.is_autheticated:
         return redirect(url_for('index'))
     form = LoginForm()

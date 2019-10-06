@@ -1,6 +1,9 @@
-
 CREATE DATABASE student_log;
 USE student_log;
+
+CREATE USER 'hallways'@'localhost' IDENTIFIED BY '_&?*2qkS$wKSQ%5GqT7PFA^-Yx%j!=';
+GRANT ALL PRIVILEGES ON student_log.* TO 'hallways'@'localhost';
+
 CREATE TABLE students(
     id INT(10) PRIMARY KEY NOT NULL,
     first_name VARCHAR(255) NOT NULL,

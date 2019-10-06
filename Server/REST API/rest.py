@@ -7,15 +7,15 @@ import json
 
 #app configuration
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "" #will come from pickle later
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://hallways:_&?*2qkS$wKSQ%5GqT7PFA^-Yx%j!=@localhost/student_log" #will come from pickle later
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "secret_holder" #TBD Change before transition to deployment
 db = SQLAlchemy.SQLAlchemy(app)
 
 
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
-    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String()) #hashed of course
@@ -46,8 +46,8 @@ login.init_app(app)
 def load_user(id):
     return User.query.get(int(id))
 
+from routes import *
 
-import routes
 
 if __name__ == '__main__':
     db.init_app(app)
