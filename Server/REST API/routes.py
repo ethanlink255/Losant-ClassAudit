@@ -1,10 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from flask_socketio import SocketIO, send, emit
 
-from rest import app, db, User
+from rest import app, db, User, Students_out, Students
 from forms import LoginForm, RegistrationForm
 
 @app.route('/')
@@ -38,3 +38,19 @@ def register():
         db.session.commit()
         return redirect(url_for('login'))
     return render_template('register.html', title="Register", form = form)
+
+@app.route('/api')
+def api():
+    if request.args:
+        if "func" in request.args
+            if func = "out" and "uuid" in request.args:
+                student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
+                if student_id is None:
+                    return "Error", 300
+                out = Students_out(student_id, 1, )
+
+
+   # else:
+   #     return "Malformed API Call", 300
+
+

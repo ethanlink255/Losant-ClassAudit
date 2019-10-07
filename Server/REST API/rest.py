@@ -12,8 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "secret_holder" #TBD Change before transition to deployment
 db = SQLAlchemy.SQLAlchemy(app)
 
-
-
+#region Models
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +36,58 @@ class User(UserMixin, db.Model):
         else:
             return False
 
+class Classes(db.Model):
+    __tablename__ = "classes"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    teacher = db.Column(db.String(80))
+    period = db.Column(db.Integer)
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+    
+class Students(db.Model):
+    __tablename__ = "students"
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(80))
+    last_name = db.Column(db.String(80))
+    uuid = db.Column(db.String(10))
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+      
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+class Students_out(db.Model):
+    __tablename__ = "students_out"
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer)
+    class_id = db.Column(db.Integer) 
+    destination = db.Column(db.String(255))
+
+    def __init__(self, student_id, class_id, destination):
+        self.student_id = student_id
+        self.class_id = class_id
+        self.destination = destination
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+      
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+#endregion
 
 #login configuration
 login = LoginManager()
@@ -47,7 +98,6 @@ def load_user(id):
     return User.query.get(int(id))
 
 from routes import *
-
 
 if __name__ == '__main__':
     db.init_app(app)

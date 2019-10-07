@@ -5,28 +5,30 @@ CREATE USER 'hallways'@'localhost' IDENTIFIED BY '_&?*2qkS$wKSQ%5GqT7PFA^-Yx%j!=
 GRANT ALL PRIVILEGES ON student_log.* TO 'hallways'@'localhost';
 
 CREATE TABLE students(
-    id INT(10) PRIMARY KEY NOT NULL,
+    id INT(10) PRIMARY KEY NOT NULL UNIQUE,
     first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL
+    last_name VARCHAR(255) NOT NULL,
+    uuid VARCHAR(255) NOT NULL
 );
 CREATE TABLE classes(
     id INT(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    teacher VARCHAR(255) NOT NULL
+    teacher VARCHAR(255) NOT NULL,
+    period INT(5) NOT NULL
 );
 CREATE TABLE students_out(
     id INT(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     student_id INT(10) NOT NULL,
     class_id INT(10) NOT NULL,
-    time_out DATE NOT NULL,
+    time_out TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     destination VARCHAR(255) NOT NULL
 );
 CREATE TABLE log(
     id INT(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     student_id INT(10) NOT NULL,
     class_id INT(10) NOT NULL,
-    time_out DATE NOT NULL,
-    time_in DATE NOT NULL,
+    a_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    a_type VARCHAR(255) NOT NULL,
     destination VARCHAR(255) NOT NULL
 );
 CREATE TABLE users(
