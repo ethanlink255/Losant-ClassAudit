@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from flask_socketio import SocketIO, send, emit
 
-from rest import app, db, User, Students_out, Students
+from rest import app, db, User, Students_out, Students, Classes
 from forms import LoginForm, RegistrationForm
 
 @app.route('/')
@@ -42,12 +42,19 @@ def register():
 @app.route('/api')
 def api():
     if request.args:
-        if "func" in request.args
-            if func = "out" and "uuid" in request.args:
+        if "func" in request.args:
+            func = request.args.get('func')
+           #
+            if (func == "out" and "uuid" in request.args) and ("class" in request.args):
                 student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
                 if student_id is None:
                     return "Error", 300
-                out = Students_out(student_id, 1, )
+
+                out = Students_out(student_id)
+            if (func == "studentlist"):
+                if("classid" in request.args):
+                    students = Classes.student.any(id=request.args.get('classid'))
+                    print(students)            
 
 
    # else:

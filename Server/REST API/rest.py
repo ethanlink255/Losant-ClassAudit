@@ -13,6 +13,13 @@ app.secret_key = "secret_holder" #TBD Change before transition to deployment
 db = SQLAlchemy.SQLAlchemy(app)
 
 #region Models
+
+#Helper table, no need for model
+student_class = db.Table('student_classes',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.id'), primary_key=True)
+
+)
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +49,7 @@ class Classes(db.Model):
     name = db.Column(db.String(80))
     teacher = db.Column(db.String(80))
     period = db.Column(db.Integer)
-
+    student = db.relationship('Student', secondary=student_class, lazy='subquery',backref=db.backref('Classes', lazy=True))
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -57,7 +64,7 @@ class Students(db.Model):
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
     uuid = db.Column(db.String(10))
-
+    
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -73,10 +80,10 @@ class Students_out(db.Model):
     class_id = db.Column(db.Integer) 
     destination = db.Column(db.String(255))
 
-    def __init__(self, student_id, class_id, destination):
+    def __init__(self, student_id, class_id):# destination):
         self.student_id = student_id
         self.class_id = class_id
-        self.destination = destination
+     #   self.destination = destination
 
     def save_to_db(self):
         db.session.add(self)

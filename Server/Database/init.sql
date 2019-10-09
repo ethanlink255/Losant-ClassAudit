@@ -16,6 +16,11 @@ CREATE TABLE classes(
     teacher VARCHAR(255) NOT NULL,
     period INT(5) NOT NULL
 );
+CREATE TABLE student_classes(
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    student_id INT(10) NOT NULL,
+    class_id INT(10) NOT NULL
+);
 CREATE TABLE students_out(
     id INT(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     student_id INT(10) NOT NULL,
