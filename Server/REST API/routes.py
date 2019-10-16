@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
@@ -7,6 +7,7 @@ from flask_socketio import SocketIO, send, emit
 from rest import app, db, User, Students_out, Students, Classes
 from forms import LoginForm, RegistrationForm
 
+import json
 @app.route('/')
 @login_required
 def index():
@@ -44,18 +45,88 @@ def api():
     if request.args:
         if "func" in request.args:
             func = request.args.get('func')
-           #
-            if (func == "out" and "uuid" in request.args) and ("class" in request.args):
+
+            if func == "out":
                 student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
                 if student_id is None:
                     return "Error", 300
 
+
                 out = Students_out(student_id)
+            if (func == "classlist"):
+                if("studentid" in request.args):
+                    classes = Classes.query.filter(Classes.student.any(id=request.args.get('studentid'))).all()
+                    json_data = {}
+                    i = 0
+                    for _class in classes:
+                        json_data[i] = {
+                            "id" : _class.id,
+                            "name" : _class.name,
+                            "teacher" : _class.teacher,
+                            "period" : _class.period
+                        }
+                        i = i + 1
+                    return jsonify(json_data)
+                else:
+                    classes = Classes.query.all()
+                    json_data = {}
+                    i = 0 
+                    for _class in classes:
+                        json_data[i] = {
+                            "id" : _class.id,
+                            "name" : _class.name,
+                            "teacher" : _class.teacher,
+                            "period" : _class.period
+                        }
+                        i = i + 1
+                    return jsonify(json_data)
             if (func == "studentlist"):
                 if("classid" in request.args):
-                    students = Classes.student.any(id=request.args.get('classid'))
-                    print(students)            
+                    students = Students.query.filter(Students.classes.any(id=request.args.get("classid"))).all()
+                    json_data = {}
+                    i = 0
+                    for _student in students:
+                        json_data[i] = {
+                            "id" : _student.id,
+                            "first_name" : _student.first_name,
+                            "last_name" : _student.last_name,
+                            "uuid" : _student.uuid
+                        }
+                        i = i + 1
+                    return jsonify(json_data)
+                else:
+                    students = Students.query.all()
+                    json_data = {}
+                    i = 0
+                    for _student in students:
+                        json_data[i] = {
+                            "id" : _student.id,
+                            "first_name" : _student.first_name,
+                            "last_name" : _student.last_name,
+                            "uuid" : _student.uuid
+                        }
+                        i = i + 1
+                    return jsonify(json_data)
+            if (func == "outlist"):
+                out_list = None
+                if("classid" in request.args):
+                    out_list = Students_out.query(class_id=request.args.get("classid")).all()
+                else:
+                    out_list = Students_out.query()
+                json_data = {}
+                i = 0
+                for _student in out_list:
+                    json_data[i] = {
+                        "id" : _student.id,
+                        "student_id" : _student.student_id,
+                        "class_id" : _student.class_id,
+                        "destination" : _student.destination
+                    }
+                    i = i + 1
+                print(Students_out.query.filter(Students_out.class_id.any(id=request.args.get("classid"))))
+                return jsonify(json_data)
 
+                    
 
    # else:
    #     return "Malformed API Call", 300

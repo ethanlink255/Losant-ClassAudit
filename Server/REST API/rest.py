@@ -49,7 +49,7 @@ class Classes(db.Model):
     name = db.Column(db.String(80))
     teacher = db.Column(db.String(80))
     period = db.Column(db.Integer)
-    student = db.relationship('Student', secondary=student_class, lazy='subquery',backref=db.backref('Classes', lazy=True))
+    student = db.relationship('Students', secondary=student_class, lazy='subquery',backref=db.backref('Classes', lazy=True))
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -58,13 +58,14 @@ class Classes(db.Model):
         db.session.delete(self)
         db.session.commit()
     
+
 class Students(db.Model):
     __tablename__ = "students"
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
     uuid = db.Column(db.String(10))
-    
+    classes = db.relationship('Classes', secondary=student_class, lazy='subquery',backref=db.backref('Students', lazy=True))
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -77,13 +78,12 @@ class Students_out(db.Model):
     __tablename__ = "students_out"
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer)
-    class_id = db.Column(db.Integer) 
+    class_id = db.Column(db.Integer, db.ForeignKey('classes.id')) 
     destination = db.Column(db.String(255))
-
-    def __init__(self, student_id, class_id):# destination):
+    def __init__(self, student_id, class_id, destination):
         self.student_id = student_id
         self.class_id = class_id
-     #   self.destination = destination
+        self.destination = destination
 
     def save_to_db(self):
         db.session.add(self)
