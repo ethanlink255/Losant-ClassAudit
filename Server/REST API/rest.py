@@ -67,6 +67,13 @@ class Students(db.Model):
     last_name = db.Column(db.String(80))
     uuid = db.Column(db.String(10))
     classes = db.relationship('Classes', secondary=student_class, lazy='subquery',backref=db.backref('Students', lazy=True))
+
+    def __init__(self, id, first_name, last_name, uuid):
+        self.id = id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.uuid = uuid
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

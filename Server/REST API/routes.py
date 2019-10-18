@@ -140,7 +140,7 @@ def api():
 
             if func == "studentadd":
                 if ("id" in request.args) and ("firstname" in request.args) and ("lastname" in request.args) and ("uuid" in request.args):
-                    NewStudent = Students_out(request.args.get("id"), request.args.get("firstname"), request.args.get("lastname"), request.args.get("uuid"))
+                    NewStudent = Students(request.args.get("id"), request.args.get("firstname"), request.args.get("lastname"), request.args.get("uuid"))
                     NewStudent.save_to_db()
                     return jsonify({"result":"success"})
             
