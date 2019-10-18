@@ -4,6 +4,7 @@ import flask_sqlalchemy as SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_socketio import SocketIO, send, emit
 import json
+from datetime import datetime
 
 #app configuration
 app = Flask(__name__)
@@ -79,7 +80,9 @@ class Students_out(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer)
     class_id = db.Column(db.Integer, db.ForeignKey('classes.id')) 
+    time_out = db.Column(db.DateTime, default=datetime.utcnow)
     destination = db.Column(db.String(255))
+
     def __init__(self, student_id, class_id, destination):
         self.student_id = student_id
         self.class_id = class_id
@@ -94,6 +97,29 @@ class Students_out(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+class Log(db.Model):
+    __tablename__ = "log"
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer)
+    class_id = db.Column(db.Integer, db.ForeignKey('classes.id')) 
+    a_time = db.Column(db.DateTime, default=datetime.utcnow)
+    a_type = db.Column(db.String(255))
+    destination = db.Column(db.String(255))
+
+    def __init__(self, student_id, class_id, a_type, destination):
+        self.student_id = student_id
+        self.class_id = class_id
+        self.a_type = a_type
+        self.destination = destination
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+      
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
 #endregion
 
 #login configuration

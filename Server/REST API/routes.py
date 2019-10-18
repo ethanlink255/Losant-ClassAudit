@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from flask_socketio import SocketIO, send, emit
 
-from rest import app, db, User, Students_out, Students, Classes
+from rest import app, db, User, Students_out, Students, Classes, Log
 from forms import LoginForm, RegistrationForm
 
 import json
@@ -47,12 +47,24 @@ def api():
             func = request.args.get('func')
 
             if func == "out":
-                student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
-                if student_id is None:
-                    return "Error", 300
+                out = Students_out.query.filter_by(uuid=request.args.get('uuid')).first()
+                if out is None:
+                    student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
+                    if student_id is None:
+                        return "Student not found", 300
+                    out = Students_out(student_id, 1, "Restroom")
+                    out_log = Log(student_id, 1, "out", "Restroom")
+                    out.save_to_db()
+                    out_log.save_to_db()
+                else:
+                    out.remove_from_db()
+                    in_log = Log(out.id, 1, "in", "Restroom")
+                    in_log.save_to_db()
+                    
+                return jsonify({"result" : "success"})
 
 
-                out = Students_out(student_id)
+                
             if (func == "classlist"):
                 if("studentid" in request.args):
                     classes = Classes.query.filter(Classes.student.any(id=request.args.get('studentid'))).all()
@@ -112,7 +124,7 @@ def api():
                 if("classid" in request.args):
                     out_list = Students_out.query(class_id=request.args.get("classid")).all()
                 else:
-                    out_list = Students_out.query()
+                    out_list = Students_out.query.all()
                 json_data = {}
                 i = 0
                 for _student in out_list:
@@ -126,7 +138,18 @@ def api():
                 print(Students_out.query.filter(Students_out.class_id.any(id=request.args.get("classid"))))
                 return jsonify(json_data)
 
-                    
+            if func == "studentadd":
+                if ("id" in request.args) and ("firstname" in request.args) and ("lastname" in request.args) and ("uuid" in request.args):
+                    NewStudent = Students_out(request.args.get("id"), request.args.get("firstname"), request.args.get("lastname"), request.args.get("uuid"))
+                    NewStudent.save_to_db()
+                    return jsonify({"result":"success"})
+            
+            if func == "classadd":
+                if ("id" in request.args) and ("name" in request.args) and ("teacher" in request.args) and ("period" in request.args):
+                    NewClass = Classes(request.args.get("id"), request.args.get("name"), request.args.get("teacher"), request.args.get("period"))
+                    NewClass.save_to_db()
+                    return jsonify({"result":"success"})
+
 
    # else:
    #     return "Malformed API Call", 300
