@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, escape
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
@@ -15,7 +15,7 @@ def index_dashboards():
     data = []
 
     for _dashboard in dashboards:
-        data.append({"caption" : _dashboard.description, "href" : url_for('dashboard', id = _dashboard.dashboard-id, _external=True) })
+        data.append({"caption" : _dashboard.description, "href" : url_for('dashboard', id = _dashboard.dashboard_id, _external=True) })
 
     return data
 
@@ -30,7 +30,7 @@ def index():
 @app.route('/dashboard')
 def dashboard():
     if "id" in request.args:
-        return render_template("dashboard.html", id = escape(request.args.get("id")))
+        return render_template("dashboard.html", dashboard_id = escape(request.args.get("id")))
 
 
 @app.route('/login', methods=['GET', 'POST'])
