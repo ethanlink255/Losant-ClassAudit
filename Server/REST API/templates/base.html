@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/main.css')}}">
 
     <!--Scripts-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -35,15 +35,15 @@
         <div id="account" class="d-flex flex-row align-items-center justify-content-around">
             <a href=""><i class="fas fa-question"></i></a>
             <a href=""><i class="fas fa-cogs"></i></a>
-            <a href=""><i class="fas fa-user-cog"></i></a>
+            <a href=""><i class="fas fa-user-shield"></i></a>
 
         </div>
 
     </div>
 
     <div id="main-wrapper">
-        <div id="header" class="d-flex flex-row align-items-center">
-            <button class="hamburger-menu"></button>
+        <div id="header" class="d-flex flex-row align-items-center border-bottom">
+
             <img src="{{ url_for('static', filename = 'images/logo-only.png')}}">
             <h3>{{ page_title }}</h3>
         </div>

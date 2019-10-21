@@ -15,15 +15,22 @@ def index_dashboards():
     data = []
 
     for _dashboard in dashboards:
-        data.append({"caption" : _dashboard.description, "href" : _dashboard.url})
+        data.append({"caption" : _dashboard.description, "href" : url_for('dashboard', id = _dashboard.dashboard-id) })
 
     return data
+
+
 
 @app.route('/')
 @login_required
 def index():
     
-    render_template("index.html", dashboards = index_dashboards(), page_title = "Home")
+    return render_template("dashboard.html", dashboards = index_dashboards(), page_title = "Home", dashboard_id = "5da88e1562cf9d0006d740f2")
+
+@app.route('/dashboard')
+def dashboard():
+    if "id" in request.args:
+        return render_template("dashboard.html", id = escape(request.args.get("id"))
 
 
 @app.route('/login', methods=['GET', 'POST'])

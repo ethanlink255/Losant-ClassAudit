@@ -45,5 +45,5 @@ CREATE TABLE users(
 CREATE TABLE dashboards(
     id INT PRIMARY KEY AUTO_INCREMENT,
     description VARCHAR(255) NOT NULL,
-    url TEXT NOT NULL UNIQUE
+    dashboard_id VARCHAR(1000) NOT NULL 
 )

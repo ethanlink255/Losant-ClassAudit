@@ -10,6 +10,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://hallways:_&?*2qkS$wKSQ%5GqT7PFA^-Yx%j!=@localhost/student_log" #will come from pickle later
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SERVER_NAME'] = "71.79.22.168" #Change to Hostname of Server
 app.secret_key = "secret_holder" #TBD Change before transition to deployment
 db = SQLAlchemy.SQLAlchemy(app)
 
@@ -132,12 +133,12 @@ class Dashboard(db.Model):
     __tablename__ = "dashboards"
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(255))
-    url = db.Column(db.Text)
+    dashboard-id = db.Column(db.Text)
 
     def __init__(self, description, url):
         self.description = description
         self.url = url
-        
+
 
 #endregion
 
