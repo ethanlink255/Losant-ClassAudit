@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block content %}
+<!--
+Begin Losant Embed
+Drop this in your markup where you would like the dashboard to go.
+-->
+<a class="los-widget" href="https://app.losant.com/dashboards/{{ dashboard-id }}" data-dashboard-id="{{ dashboard-id }}" data-theme="light" data-height="649px" data-width="100%" data-refresh-rate="5">
+  View my Losant-powered dashboard "Class Count"
+</a>
+<script>
+    window.lsnt = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+            t = window.lsnt || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://app.losant.com/scripts/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+        t._e = [];
+        t.ready = function(f) {
+            t._e.push(f);
+        };
+        return t;
+    }(document, "script", "lsnt-widgets"));
+</script>
+<!-- End Losant Embed -->
+{% endblock %}
