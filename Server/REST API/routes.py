@@ -4,14 +4,27 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from flask_socketio import SocketIO, send, emit
 
-from rest import app, db, User, Students_out, Students, Classes, Log
+from rest import app, db, User, Students_out, Students, Classes, Log, Dashboard
 from forms import LoginForm, RegistrationForm
 
+import requests
 import json
+
+def index_dashboards():
+    dashboards = Dashboard.query.all()
+    data = []
+
+    for _dashboard in dashboards:
+        data.append({"caption" : _dashboard.description, "href" : _dashboard.url})
+
+    return data
+
 @app.route('/')
 @login_required
 def index():
-    return render_template("index.html")
+    
+    render_template("index.html", dashboards = index_dashboards(), page_title = "Home")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -40,6 +53,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title="Register", form = form)
 
+
 @app.route('/api')
 def api():
     if request.args:
@@ -47,20 +61,21 @@ def api():
             func = request.args.get('func')
 
             if func == "out":
-                out = Students_out.query.filter_by(uuid=request.args.get('uuid')).first()
+                student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
+                if student_id is None:
+                    return "Student not found", 300
+                out = Students_out.query.filter_by(student_id=student_id).first()
                 if out is None:
-                    student_id = Students.query.filter_by(uuid=request.args.get('uuid')).first().id
-                    if student_id is None:
-                        return "Student not found", 300
+                   
                     out = Students_out(student_id, 1, "Restroom")
                     out_log = Log(student_id, 1, "out", "Restroom")
                     out.save_to_db()
                     out_log.save_to_db()
                 else:
                     out.remove_from_db()
-                    in_log = Log(out.id, 1, "in", "Restroom")
+                    in_log = Log(student_id, 1, "in", "Restroom")
                     in_log.save_to_db()
-                    
+                trigger = requests.get("https://triggers.losant.com/webhooks/dNYJmaHMAydFYL_fE4MkI0fbZWsE0Z3DH5EcoHhFaA1$")
                 return jsonify({"result" : "success"})
 
 
@@ -69,6 +84,7 @@ def api():
                 if("studentid" in request.args):
                     classes = Classes.query.filter(Classes.student.any(id=request.args.get('studentid'))).all()
                     json_data = {}
+
                     i = 0
                     for _class in classes:
                         json_data[i] = {
@@ -135,7 +151,6 @@ def api():
                         "destination" : _student.destination
                     }
                     i = i + 1
-                print(Students_out.query.filter(Students_out.class_id.any(id=request.args.get("classid"))))
                 return jsonify(json_data)
 
             if func == "studentadd":

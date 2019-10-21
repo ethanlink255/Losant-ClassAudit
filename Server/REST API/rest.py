@@ -127,6 +127,18 @@ class Log(db.Model):
     def remove_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+class Dashboard(db.Model):
+    __tablename__ = "dashboards"
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(255))
+    url = db.Column(db.Text)
+
+    def __init__(self, description, url):
+        self.description = description
+        self.url = url
+        
+
 #endregion
 
 #login configuration

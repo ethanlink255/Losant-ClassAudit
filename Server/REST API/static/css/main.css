@@ -1,0 +1,70 @@
+    html,
+    body {
+        font-size: 16px !important;
+        font-family: "Montserrat", Arial, Helvetica, sans-serif;
+        overflow: hidden;
+    }
+    
+    hr {
+        width: 100%;
+    }
+    
+    .hamburger-menu {
+        position: relative;
+        padding-left: 1.25em;
+    }
+    
+    .hamburger-menu:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.25em;
+        width: 1em;
+        height: 0.15em;
+        background: black;
+        box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
+    }
+    
+    #header>img {
+        height: 60px;
+    }
+    
+    #header::before {
+        content: '';
+        display: block;
+        width: 100%;
+        color: #3399ff;
+        height: 15px;
+    }
+    
+    #sidebar {
+        top: 0;
+        left: 0;
+        width: 250px;
+        font-size: 18px;
+    }
+    
+    #sidebar>img {
+        height: 150px;
+    }
+    
+    #sidebar>div {
+        padding: 14px 5px 0px;
+    }
+    
+    #sidebar>div>* {
+        margin-left: 5px;
+        color: grey;
+    }
+    
+    #account>a {
+        padding: 14px;
+        border-radius: 14px;
+        border: 2px solid grey;
+    }
+    
+    #main-wrapper {
+        width: calc(100% - 250px);
+        height: 100vh;
+        transform: translateX(250px);
+    }

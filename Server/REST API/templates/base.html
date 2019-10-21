@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hallways</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css')}}">
+
+    <!--Scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div id="sidebar" class="position-fixed border-right">
+        <img src="{{ url_for('static', filename = 'images/sized.png')}}">
+        <hr>
+
+        <div id="main">
+            <a href="TBD"><i class="fas fa-binoculars"></i>&nbsp;Overview</a>
+            <a href="TBD"><i class="fas fa-exclamation-triangle"></i>&nbsp;Errors</a>
+        </div>
+
+        <div id="dashboards">
+            <h6><i class="fas fa-users"></i>&nbsp;Dashboards</h6>
+            {% for item in dashboards %}
+            <a href="{{ item.href }}">{{ item.caption }}</a> {% endfor %}
+        </div>
+
+        <hr>
+        <div id="account" class="d-flex flex-row align-items-center justify-content-around">
+            <a href=""><i class="fas fa-question"></i></a>
+            <a href=""><i class="fas fa-cogs"></i></a>
+            <a href=""><i class="fas fa-user-cog"></i></a>
+
+        </div>
+
+    </div>
+
+    <div id="main-wrapper">
+        <div id="header" class="d-flex flex-row align-items-center">
+            <button class="hamburger-menu"></button>
+            <img src="{{ url_for('static', filename = 'images/logo-only.png')}}">
+            <h3>{{ page_title }}</h3>
+        </div>
+        <div id="main">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>
