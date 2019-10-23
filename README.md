@@ -14,11 +14,16 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them
 
 The application is currently broken down into client and server side applications, with install requirements, and shell scripts in each.
+
 #### Hardware
 
+##### Parts List
 * [Raspberry Pi 3 B+](https://www.raspberrypi.org)
 * [Raspberry Pi 7 in. Display](https://www.raspberrypi.org)
 * Linux Server
+
+##### Wiring
+See Client/wiring schematic.jpg
 
 #### Server Side Installation
 
@@ -30,6 +35,18 @@ sudo ./Server/.setup.sh
 ##### Second, install python3 requirements
 ```
 pip3 install -r ./Server/requirements.txt
+```
+
+#### Client Side Installation
+
+##### First, execute setup.sh (as root)
+```
+chmod +x ./Client/setup.sh
+sudo ./Client/.setup.sh
+```
+##### Second, install python3 requirements
+```
+pip3 install requests
 ```
 
 ### Installing
