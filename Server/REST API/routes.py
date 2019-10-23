@@ -14,7 +14,8 @@ def index_dashboards():
     dashboards = Dashboard.query.all()
     data = []
 
-    for _dashboard in dashboards:
+    for _dashbo
+    ard in dashboards:
         data.append({"caption" : _dashboard.description, "href" : url_for('dashboard', id = _dashboard.dashboard_id, _external=True) })
 
     return data
