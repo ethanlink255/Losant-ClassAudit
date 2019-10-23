@@ -57,10 +57,6 @@ pip3 install requests
 #### Client Side
 **Warning**: Project unfinshed, currently client side, the application is ran from Client/client.py
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
 * [Losant](http://www.losant.com) - Dashboard system used to display data
